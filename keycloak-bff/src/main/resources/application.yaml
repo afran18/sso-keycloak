@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: keycloak-bff
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8081
+
+
+keycloak:
+  realm: company-realm
+  client-id: app-a
+  client-secret: VxbAlYYG1b9vpkkr2H0ovQKoZE4QMW9L
+  auth-server-url: http://localhost:8080
