@@ -1,6 +1,6 @@
-package com.afran.keycloak_bff.service;
+package com.afran.keycloak_bff_b.service;
 
-import com.afran.keycloak_bff.dto.TokenResponse;
+import com.afran.keycloak_bff_b.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class SessionService {
-//    private final Map<String, TokenResponse> sessions = new ConcurrentHashMap<>();
 private final RedisTemplate<String, Object> redisTemplate;
 
     public String createSession(
@@ -27,7 +26,6 @@ private final RedisTemplate<String, Object> redisTemplate;
                         tokenResponse,
                         Duration.ofMinutes(5)
                 );
-
         System.out.println(
                 "[REDIS] Session stored : "
                         + sessionId
@@ -38,6 +36,7 @@ private final RedisTemplate<String, Object> redisTemplate;
     public TokenResponse getSession(
             String sessionId
     ) {
+
         System.out.println(
                 "[REDIS] Looking up session : "
                         + sessionId
@@ -65,8 +64,8 @@ private final RedisTemplate<String, Object> redisTemplate;
     public void deleteSession(
             String sessionId
     ) {
-        redisTemplate.delete(sessionId);
 
+        redisTemplate.delete(sessionId);
         System.out.println(
                 "[REDIS] Session deleted : "
                         + sessionId

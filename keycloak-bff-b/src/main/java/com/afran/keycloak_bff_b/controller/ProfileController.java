@@ -1,9 +1,9 @@
-package com.afran.keycloak_bff.controller;
+package com.afran.keycloak_bff_b.controller;
 
-import com.afran.keycloak_bff.dto.TokenResponse;
-import com.afran.keycloak_bff.dto.UserProfile;
-import com.afran.keycloak_bff.service.JwtService;
-import com.afran.keycloak_bff.service.SessionService;
+import com.afran.keycloak_bff_b.dto.TokenResponse;
+import com.afran.keycloak_bff_b.dto.UserProfile;
+import com.afran.keycloak_bff_b.service.JwtService;
+import com.afran.keycloak_bff_b.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,7 +20,7 @@ public class ProfileController {
     @GetMapping("/profile")
     public ResponseEntity<?> profile(
             @CookieValue(
-                    value = "APP_A_SESSION",
+                    value = "APP_B_SESSION",
                     required = false
             )
             String sessionId
@@ -29,14 +29,14 @@ public class ProfileController {
         if (sessionId == null) {
 
             System.out.println(
-                    "[AUTH] No APP_A_SESSION cookie found"
+                    "[AUTH] No APP_B_SESSION cookie found"
             );
 
             return ResponseEntity.status(401).build();
         }
 
         System.out.println(
-                "[AUTH] APP_A_SESSION cookie found"
+                "[AUTH] APP_B_SESSION cookie found"
         );
 
         TokenResponse token =

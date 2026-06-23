@@ -1,9 +1,9 @@
-package com.afran.keycloak_bff.controller;
+package com.afran.keycloak_bff_b.controller;
 
-import com.afran.keycloak_bff.config.KeycloakProperties;
-import com.afran.keycloak_bff.dto.TokenResponse;
-import com.afran.keycloak_bff.service.KeycloakAuthService;
-import com.afran.keycloak_bff.service.SessionService;
+import com.afran.keycloak_bff_b.config.KeycloakProperties;
+import com.afran.keycloak_bff_b.dto.TokenResponse;
+import com.afran.keycloak_bff_b.service.KeycloakAuthService;
+import com.afran.keycloak_bff_b.service.SessionService;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,11 +20,10 @@ public class AuthController {
     private final KeycloakAuthService keycloakAuthService;
     private final SessionService sessionService;
     private final KeycloakProperties keycloakProperties;
-
     @PostConstruct
     public void init() {
         System.out.println("=================================");
-        System.out.println("APP-A STARTED");
+        System.out.println("APP-B STARTED");
         System.out.println("CLIENT ID = "
                 + keycloakProperties.getClientId());
         System.out.println("=================================");
@@ -41,10 +40,10 @@ public class AuthController {
                         + "?client_id=" + keycloakProperties.getClientId()
                         + "&response_type=code"
                         + "&scope=openid"
-                        + "&redirect_uri=http://localhost:8081/auth/callback";
+                        + "&redirect_uri=http://localhost:8082/auth/callback";
 
         System.out.println("[SSO] Redirecting user to Keycloak");
-        System.out.println("[APP-A LOGIN]");
+        System.out.println("[APP-B LOGIN]");
         System.out.println(url);
 
         response.sendRedirect(url);
@@ -87,7 +86,7 @@ public class AuthController {
         );
 
         Cookie cookie =
-                new Cookie("APP_A_SESSION", sessionId);
+                new Cookie("APP_B_SESSION", sessionId);
 
         cookie.setHttpOnly(true);
         cookie.setPath("/");
@@ -95,7 +94,7 @@ public class AuthController {
         response.addCookie(cookie);
 
         System.out.println(
-                "[SSO] APP_A_SESSION cookie created"
+                "[SSO] APP_B_SESSION cookie created"
         );
 
         response.sendRedirect("http://localhost:3001");
@@ -103,7 +102,7 @@ public class AuthController {
 
     @GetMapping("/logout")
     public void logout(
-            @CookieValue("APP_A_SESSION")
+            @CookieValue("APP_B_SESSION")
             String sessionId,
             HttpServletResponse response
     ) throws IOException {
@@ -127,7 +126,7 @@ public class AuthController {
         sessionService.deleteSession(sessionId);
 
         Cookie cookie =
-                new Cookie("APP_A_SESSION", "");
+                new Cookie("APP_B_SESSION", "");
 
         cookie.setPath("/");
         cookie.setMaxAge(0);
@@ -135,7 +134,7 @@ public class AuthController {
         response.addCookie(cookie);
 
         System.out.println(
-                "[SSO] APP_A_SESSION cookie removed"
+                "[SSO] APP_B_SESSION cookie removed"
         );
 
         String logoutUrl =
